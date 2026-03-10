@@ -1,0 +1,59 @@
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 5vw;
+}
+
+.create-btn {
+  margin-bottom: 15px;
+}
+
+
+.event-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .events-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* TOOLBAR */
+
+.event-toolbar {
+  display: flex;
+  justify-content: flex-end;
+
+  margin-bottom: 20px;
+
+  /* largeur identique à la grid */
+  max-width: calc(3 * 420px + 2 * 20px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* BOUTON */
+
+.create-event-btn {
+  padding: 8px 16px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #1976d2;
+  color: white;
+
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.create-event-btn:hover {
+  background: #125aa3;
+}

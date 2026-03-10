@@ -1,0 +1,21 @@
+<div class="container">
+    @if (eventService.loading()) {
+        <p>Chargement...</p>
+    } 
+    @else {
+
+
+    <div class="event-toolbar">
+        <button (click)="modalService.openCreate()" class="create-event-btn" >
+        + Nouvel évènement
+        </button>
+    </div>
+
+    <div class="event-list">
+        @for (event of eventService.events(); track event.Id) {            
+            <app-event-card [event]="event"></app-event-card>    
+        }
+    </div>
+  }
+</div>
+

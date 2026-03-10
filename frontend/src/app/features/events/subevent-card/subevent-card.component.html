@@ -1,0 +1,27 @@
+<div class="subevent">
+    
+  <div class="subevent-header">
+    <div class="subevent-name">
+        {{ subEvent.Name }}
+    </div>
+    <div class="subevent-date">
+      {{ subEvent.StartAt | date:'dd/MM/yyyy HH:mm' }}
+    </div>
+  </div> 
+  <div class="subevent-races">
+    @for (race of subEvent.Races; track race.Id) {       
+        <div class="race-badge">
+
+          <span class="material-symbols-outlined">
+            {{ referentielService.getRaceTypeById(race.RaceTypeId).Icone }}
+          </span>
+
+          <span class="race-distance">
+            {{ race.Distance }} {{ referentielService.getDistanceTypeById(race.DistanceTypeId).Abbreviation }}
+          </span>
+
+      </div>
+
+    }
+  </div>
+</div>

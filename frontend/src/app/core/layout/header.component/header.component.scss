@@ -1,0 +1,60 @@
+/* HEADER */
+.header {
+  position: relative;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* menu centré globalement */
+  background: white;
+}
+
+/* LOGO */
+.logo {
+  position: absolute; /* sort du flux */
+  left: 30px;
+  top: 0;
+  display: flex;
+  z-index: 2;
+  align-items: flex-start;
+  background: white;
+}
+
+.logo img {
+  height: 180px; /* 👈 change librement */
+  transform: translateY(8px); /* petit décalage vers le bas */
+  width: auto;
+  object-fit: contain;
+}
+
+/* NAVIGATION */
+.nav {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+/* Ligne sous le menu UNIQUEMENT */
+.header::after {
+  content: "";
+  position: absolute;
+  bottom: -15px; /* espace entre texte et ligne */
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, #e5e5e5, #cccccc);
+}
+
+.nav ul {
+  display: flex;
+  list-style: none;
+  gap: 60px;
+  padding: 0;
+  margin: 0;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding-bottom: 5px;
+}

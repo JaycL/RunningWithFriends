@@ -1,0 +1,43 @@
+<div class="event-card">
+
+  
+  <!-- HEADER -->
+  <div class="event-header">
+    <h2 class="event-title">{{ event.Name }}</h2>
+
+    <div class="event-actions">
+      <button class="btn edit" (click)="modalService.openEdit(event)" >✏️</button>
+      <button class="btn delete" (click)="deleteEvent(event)">🗑</button>
+    </div>
+  </div>
+
+  <!-- DATES -->
+  <div class="event-dates">
+    <span>Début : {{ event.StartAt | date : 'dd/MM/yyyy'}}</span>
+    <span>Fin : {{ event.EndAt | date : 'dd/MM/yyyy'}}</span>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="event-footer">    
+    @if (event.NbSubEvents <= 0 ) {
+        
+    }
+    @else {
+        <button class="btn toggle-sous-events" (click)="toggle()">
+            Course(s) ( {{event.NbSubEvents}})            
+        </button>
+    }    
+
+    <div class="event-location">      
+      <div class="location-sub">{{ event.City }}</div>
+    </div>
+
+  </div>
+
+  <!-- Sous events -->
+   @if (isOpen) {        
+      <app-subevent-list [eventId]="event.Id"></app-subevent-list>              
+    } 
+
+</div>
+

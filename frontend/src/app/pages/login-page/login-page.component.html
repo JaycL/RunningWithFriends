@@ -1,0 +1,55 @@
+<div class="login-page">
+
+  <div class="login-card">
+
+    <h1>Connexion</h1>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <div class="field">
+
+        <label>Login</label>
+
+        <input
+          type="text"
+          formControlName="email"
+          placeholder="Votre login">
+
+        @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
+          <small>Login obligatoire</small>
+        }
+
+      </div>
+
+      <div class="field">
+
+        <label>Mot de passe</label>
+
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Votre mot de passe">
+
+        @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+          <small>Mot de passe obligatoire</small>
+        }
+
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid || loading()">
+
+        @if (!loading()) {
+          <span>Se connecter</span>
+        } @else {
+          <span>Connexion...</span>
+        }
+
+      </button>
+
+    </form>
+
+  </div>
+
+</div>

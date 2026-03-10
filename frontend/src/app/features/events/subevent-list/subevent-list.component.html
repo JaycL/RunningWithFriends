@@ -1,0 +1,8 @@
+<div class="sous-event-grid" >
+
+    @for (subEvent of subevents(); track subEvent.Id) {
+        <app-subevent-card [subEvent]="subEvent"></app-subevent-card>
+    }
+</div>
+
+

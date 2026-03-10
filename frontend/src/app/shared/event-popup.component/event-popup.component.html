@@ -1,0 +1,99 @@
+<div class="modal-overlay">
+  <div class="modal">
+
+    <div class="header">
+      <h2>{{ event ? 'Modifier l’événement' : 'Créer un événement' }}</h2>
+      <button class="close-btn" (click)="onClose()">✕</button>
+    </div>
+
+    <form [formGroup]="formEvent" (ngSubmit)="onSubmit()">
+        <!-- Informations principales -->
+        <div class="section">
+            <input formControlName="Name" placeholder="Nom de l'événement">        
+            <input type="datetime-local" formControlName="StartAt">
+            <input type="datetime-local" formControlName="EndAt">
+            <input formControlName="City" placeholder="Lieu">
+            <label>
+                <input type="radio" formControlName="IsPublic" [value]="true">
+                Public        
+                <input type="radio" formControlName="IsPublic" [value]="false">
+                Privé
+            </label>
+        </div>
+        <!-- Fin Informations principales -->
+
+        <!-- Sous événements -->
+        <div class="section">
+            <h3>Sous événements</h3>
+
+            <div formArrayName="subEvents">
+                @for (se of subEvents.controls; track $index; let i = $index) {
+                    <div [formGroupName]="i" class="sous-event-card">
+
+                        <input formControlName="Name" placeholder="Nom">                                                
+                        <select id="eventType" formControlName="SubeventTypeId">
+                            @for (option of referentielService.subeventTypes; track option.Id) {                                                        
+                                <option [value]="option.Id">
+                                    {{ option.Name }}
+                                </option>
+                            }
+                        </select>
+                        <input type="datetime-local" formControlName="StartAt">
+
+                        <!-- Épreuves -->
+                        <div class="epreuves">
+                            <h4>Épreuves</h4>
+                            <div formArrayName="Races">
+                                @for (ep of getRaces(i).controls; track $index; let j = $index) {
+                                    <div [formGroupName]="j" class="epreuve-row">
+                                        <select id="epreuveType" formControlName="RaceTypeId">                                         
+                                        @for (opE of referentielService.raceTypes; track opE.Id) {                                                        
+                                            <option [value]="opE.Id">
+                                                {{ opE.Name }}
+                                            </option>
+                                        }
+                                        </select>
+                                        <input type="number" step="0.01" formControlName="Distance" placeholder="distance">  
+                                        
+                                        
+                                         <select id="DistanceTypeId" formControlName="DistanceTypeId">                                         
+                                        @for (opE of referentielService.distanceTypes; track opE.Id) {                                                        
+                                            <option [value]="opE.Id">
+                                                {{ opE.Name }}
+                                            </option>
+                                        }
+                                        </select>
+                                        
+                                        <button type="button" (click)="removeRace(i,j)" [disabled]="(getRaces(i).length <= 1 ? true : false)">Supprimer </button>
+                                    </div>
+                                }
+                            </div>
+                            <button type="button" (click)="createRace(i)">+ Ajouter une épreuve</button>
+                        </div>
+                        <!-- Fin Épreuves -->   
+
+                        <button type="button" class="remove-btn" (click)="removeSubvent(i)" >
+                            Supprimer le sous événement
+                        </button>
+
+                    </div>
+                }
+            </div>                
+        <button type="button" (click)="createSubEvent()">+ Ajouter un sous événement</button>
+      </div>
+
+
+
+      <div class="actions">
+        <button type="button" (click)="closePopup()"> Fermer</button>
+      </div>
+
+      <div class="actions">
+        <button type="submit" [disabled]="formEvent.invalid">
+          {{ event ? 'Mettre à jour' : 'Créer' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

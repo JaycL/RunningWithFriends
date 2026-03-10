@@ -1,0 +1,16 @@
+<header>
+  <app-header></app-header>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+
+ @if(modalService.showEventModal()){
+  <app-event-popup
+    [event]="modalService.selectedEvent()"
+    (close)="modalService.close()">
+    (save)="modalService.onSaveAfter()">
+  </app-event-popup>
+}

@@ -1,0 +1,97 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;                /* top:0 right:0 bottom:0 left:0 */
+
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0,0,0,0.4);
+  z-index: 9999;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+
+  width: 700px;
+  max-width: 90vw;
+  max-height: 90vh;
+
+  overflow: auto;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.sous-event-card {
+  border: 1px solid #eee;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.epreuves {
+  margin-top: 10px;
+  padding-left: 10px;
+}
+
+.epreuve-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.remove-btn {
+  margin-top: 10px;
+  background: #ffdddd;
+  border: none;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.actions {
+  margin-top: 20px;
+  text-align: right;
+}
+
+button {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  background: #1976d2;
+  color: white;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #aaa;
+}
