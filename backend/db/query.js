@@ -18,6 +18,7 @@ export async function query(sqlQuery, params = {}) {
         }
 
     });
+  
     const result = await request.query(sqlQuery);
 
     return result.recordset;

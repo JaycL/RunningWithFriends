@@ -1,11 +1,20 @@
 import { Injectable, signal } from '@angular/core';
 
+export interface User {
+  Id: number;
+  Pseudo: string;
+  Email?: string;
+}
+
+
 @Injectable({ providedIn: 'root' })
 
 export class AuthService {
-    
-    pseudo = signal<string>("");
+ 
+    private _currentUser = signal<User | null>(null);
+    currentUser = this._currentUser.asReadonly();
 
+    
   login(token: string) {
     localStorage.setItem('token', token);
   }
@@ -20,5 +29,10 @@ export class AuthService {
 
   getToken() {
     return localStorage.getItem('token');
+  }
+
+  setUser(user: User) {
+    console.log(user);
+    this._currentUser.set(user);
   }
 }

@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from "cors";
 import { errorMiddleware } from './middleware/errorMiddleware.js';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 import router from './routes/index.routes.js';
 

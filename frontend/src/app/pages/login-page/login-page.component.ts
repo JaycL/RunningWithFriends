@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 import { Router } from '@angular/router';
 import { environment } from '../../../environment.ts/environment.js';
 import { ApiResponse } from '../../core/models/api.model.js';
+import { AuthService } from '../../core/services/auth.service.js';
 
 @Component({
   selector: 'app-login-page',
@@ -15,7 +16,7 @@ import { ApiResponse } from '../../core/models/api.model.js';
 export class LoginPageComponent {
   private http: HttpClient = inject(HttpClient);  
   router = inject(Router);
-
+  authService = inject(AuthService);
   fb = inject(FormBuilder);
 
   loading = signal(false);
@@ -33,31 +34,28 @@ export class LoginPageComponent {
 
     const { email, password } = this.loginForm.getRawValue();
 
-    console.log(email, password);
-
-    // appel API ici
-    /*await new Promise(r => setTimeout(r, 1000));-*/
-
-    
-    const response = await firstValueFrom(this.http.post<ApiResponse<any>>(environment.apiUrl+'auth', {
+    const response = await firstValueFrom(this.http.post<ApiResponse<any>>(environment.apiUrl+'users/auth', {
       email,
       password
     }));
     console.log(response);
-    localStorage.setItem('token', response.toLocaleString());
+    console.log(response.data.token);
 
+    
     this.loading.set(false);
 
-    if (response.data ===  '') {
-
+    if (response.data.sucess ===  false) {
       return;
     }
 
+    this.authService.login(response.data.token)
+
     const response4 = await firstValueFrom(this.http.get<ApiResponse<any>>(environment.apiUrl+'users/me'));
-    console.log(response4);
+    
+    this.authService.setUser(response4.data)
+    console.log(response4.data);
 
     this.router.navigate(['/events']);
 
   }
-
 }

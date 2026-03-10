@@ -7,7 +7,7 @@ import { ModalService } from './core/services/modal.service.js';
   imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss',
-  providers: [ ],
+  providers: [],
 })
 
 

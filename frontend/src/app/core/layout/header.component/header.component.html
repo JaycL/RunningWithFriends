@@ -9,11 +9,11 @@
             <li><a routerLink="/">Mon Profils</a></li>
         </ul>
     </nav>
-    <div>
-        @if (authService.pseudo()) {
+    <div>        
+        @if (authService.currentUser()?.Pseudo) {
             <p>
                 Bienvenue, 
-                {{authService.pseudo()}}
+                {{authService.currentUser()?.Pseudo}}
             </p>
         }
 

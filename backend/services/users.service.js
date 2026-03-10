@@ -1,6 +1,39 @@
 import * as usersRepositories from '../repositories/users.repositories.js'
+import jwt from 'jsonwebtoken'
 
-export  async function getMe(IdUser) {  
-    return await usersRepositories.getMe(IdUser);  
+export  async function getMe(userId) {  
+
+    console.log("getMe: "+userId);
+    const row = await usersRepositories.getUserById(userId);  
+    console.log(row);
+    if (row.length <= 0)
+        return null;
+    return row[0];
 }
 
+
+export  async function login(email , pass) {  
+   
+
+  const user = await usersRepositories.getUserByLogin(email);    
+  if (!user[0] || user[0].Password !== pass) {
+    return {
+      success: false,
+      message: "Login incorrect"
+    }
+  }
+
+
+
+  const token = jwt.sign(
+    { userId: user[0].Id },
+    process.env.JWT_SECRET,
+    { expiresIn: '7d' }
+  );
+
+  return {
+    success: true,    
+    token    
+  };
+
+}
