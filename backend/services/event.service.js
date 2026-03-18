@@ -1,11 +1,22 @@
-import * as eventRepertories from "../repositories/events.repositories.js"
-import * as subeventRepertories from "../repositories/subevents.repositories.js"
-import * as raceRepertories from "../repositories/races.repositories.js"
 import sql from 'mssql';
+
 import { pool } from "../db/database.js";
+import { log } from "../utils/logger.js";
+
+import * as eventRepertories from "../repositories/event.repositories.js"
+
+import * as seService from './subEvent.service.js/index.js'
+import { mapEvent } from '../mappers/event.mapper.js';
+
+
+const scope = "event.service";
 
 export async function getSubEvents(eventId) {
-  const rows = await eventRepertories.getSubEvents(eventId);
+  log(scope, "getSubEvents");
+  return  await seService.getSubEvents(eventId);
+
+
+
 
   const map = new Map();
   for (const row of rows) {
@@ -33,16 +44,18 @@ export async function getSubEvents(eventId) {
   return Array.from(map.values());
 }
 
-export  async function getEventsWithSubEventCount() {  
-  return await eventRepertories.getEventsWithSubEventCount();
+export  async function getEventsWithStats(eventId) {  
+  log(scope, "getEventsWithStats");  
+  const row = await eventRepertories.getEventsWithStats(eventId);
+  if (!rows.length) {
+    return [];
+  }
+  return row.map(mapEvent());
 }
 
-
-
 export  async function createUpdateEvent(event) {  
+  log(scope, "createUpdateEvent");
 
-  // -- requete pour verifier que l'event existe 
-  console.log("Creation ou ajout ");
   const transaction = new sql.Transaction(pool);
   try {
 
@@ -65,16 +78,13 @@ export  async function createUpdateEvent(event) {
             Races: []
           }          
          
-          for (const [i, race] of (subevent.Races.entries() || [])) {
-            console.log("Avant race");
-            const rowRace = await raceRepertories.saveRace(rowsub.Id, i, race);
-            console.log(rowRace);
+          for (const [i, race] of (subevent.Races.entries() || [])) {         
+            const rowRace = await raceRepertories.saveRace(rowsub.Id, i, race);         
             createdSubevent.Races.push(rowRace);
           }             
           createdEvent.subevents.push(createdSubevent);
 
-        }
-        console.log("fin ");
+        }        
 
     await transaction.commit();
     return createdEvent;    
@@ -88,5 +98,6 @@ export  async function createUpdateEvent(event) {
 }
 
 export  async function deleteEvent(idEvent) {  
+  log(scope, "deleteEvent")
   return await eventRepertories.deleteEvent(idEvent);
 }

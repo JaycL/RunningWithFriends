@@ -5,13 +5,19 @@ export interface RaceType {
   Icone: string;
 }
 
-export interface SubeventType {
+export interface SubEventType {
   Id: number;
   Name: string;
   Description: string;
 }
 
-export interface DistanceType {
+export interface DistanceUnit {
+  Id: number;
+  Name: string;
+  Abbreviation: string;
+}
+
+export interface ParticipationStatus {
   Id: number;
   Name: string;
   Abbreviation: string;
@@ -20,6 +26,7 @@ export interface DistanceType {
 
 export interface References {
   raceTypes: RaceType[];
-  subeventTypes: SubeventType[];
-  distanceTypes: DistanceType[];
+  subeventTypes: SubEventType[];
+  distanceUnits: DistanceUnit[];
+  participationStatus: ParticipationStatus[];
 }

@@ -1,25 +1,18 @@
-import {sql, pool, poolConnect } from "./database.js";
+import {pool } from "./database.js";
 
 export async function query(sqlQuery, params = {}) {
 
-    await poolConnect; // très important
-    const request = pool.request();
+   const values = Object.values(params);
 
-    Object.entries(params).forEach(([key, value]) => {
+    const result = await pool.query(sqlQuery, values);    
+    return result.rows;
+}
 
-        if (typeof value === "number") {
-            request.input(key, sql.Int, value);
-        }
-        else if (typeof value === "boolean") {
-            request.input(key, sql.Bit, value);
-        }
-        else {
-            request.input(key, sql.NVarChar, value);
-        }
-
-    });
-  
-    const result = await request.query(sqlQuery);
-
-    return result.recordset;
+export function arrayToString(ids) {
+    if (!ids || ids.length === 0) return "NULL";
+    
+    return ids
+            .map(v => Number(v))
+            .filter(v => !isNaN(v))
+            .join(",");
 }

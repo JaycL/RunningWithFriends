@@ -19,19 +19,21 @@
 
   <!-- FOOTER -->
   <div class="event-footer">    
-    @if (event.NbSubEvents <= 0 ) {
+    @if (event.NbSubEvent <= 0 ) {
         
     }
     @else {
         <button class="btn toggle-sous-events" (click)="toggle()">
-            Course(s) ( {{event.NbSubEvents}})            
+            Course(s) ( {{event.NbSubEvent}})            
         </button>
     }    
 
     <div class="event-location">      
+      <div class="location-sub">{{ event.NbUserSubEvent }} participants</div>
+    </div>
+    <div class="event-location">      
       <div class="location-sub">{{ event.City }}</div>
     </div>
-
   </div>
 
   <!-- Sous events -->

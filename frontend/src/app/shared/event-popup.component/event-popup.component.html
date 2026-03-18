@@ -57,7 +57,7 @@
                                         
                                         
                                          <select id="DistanceTypeId" formControlName="DistanceTypeId">                                         
-                                        @for (opE of referentielService.distanceTypes; track opE.Id) {                                                        
+                                        @for (opE of referentielService.distanceUnit; track opE.Id) {                                                        
                                             <option [value]="opE.Id">
                                                 {{ opE.Name }}
                                             </option>

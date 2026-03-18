@@ -1,10 +1,8 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { ModelEvent, ModelSubEvent } from '../models/event.model';
-import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { ApiResponse } from '../models/api.model.js';
-import { mapApiData } from '../../utils/api.utils.js';
-import { environment } from '../../../environment.ts/environment.js';
+
+import { ApiService } from './api.service.js';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +10,7 @@ import { environment } from '../../../environment.ts/environment.js';
 
 
 export class EventService {
-  private http: HttpClient = inject(HttpClient);  
-
+  private api = inject(ApiService);
   private _events = signal<ModelEvent[]>([]);    
   private _loading = signal(true);        
   private _subeventsByEvent = signal<Record<number,ModelSubEvent[]>>({});
@@ -28,34 +25,47 @@ export class EventService {
       return; // déjà chargé
     }
     
-    this.http.get<ApiResponse<ModelEvent[]>>(environment.apiUrl+"events/events-with-subevent-count").pipe(
-        tap(res => {          
-          this._events.set(res.data);
+    this.api.get<ModelEvent[]>("events/events-with-stats").pipe(
+        tap(res => {   
+          console.log(res);       
+          this._events.set(res);
           this._loading.set(false);    
         })
       ).subscribe();    
   }
 
+
+   loadEventById(evenId: number) {    
+    this.api.get<ModelEvent[]>("events/"+evenId+"/with-stats").pipe(
+        tap(res => {   
+          const updated = res[0]
+          this._events.update(list => 
+            list.map(e => e.Id === evenId ? updated : e)
+          )          
+        })
+      ).subscribe();    
+  }
+
+
   loadSubEvents(id: number) {
     const cache = this._subeventsByEvent();
     if (cache[id]) return ;  
-    return this.http.get<ApiResponse<ModelSubEvent[]>>(environment.apiUrl+"events/"+id+"/subevents").pipe(
-      tap(res => console.log("API RESPONSE", res)),
-      mapApiData(),
+    
+    return this.api.get<ModelSubEvent[]>("events/"+id+"/subevents")
+      .pipe(           
       tap (subEvents => {
+            console.log(subEvents);
             this._subeventsByEvent.update(state => ({
               ...state,
               [id]: subEvents
             }));
 
-      }
-    )
-  );
+          }) 
+    );
   }
 
   getEventById(eventId: number) : Observable<ModelEvent> {        
-    return this.http.get<ApiResponse<ModelEvent>>(environment.apiUrl+"events/"+eventId).pipe(
-      mapApiData(),
+    return this.api.get<ModelEvent>("events/"+eventId).pipe(      
       tap(newEvent => {
           this._events.update(events => [...events, newEvent]);
         })
@@ -63,8 +73,7 @@ export class EventService {
   }
 
   updateEvent(updatedEvent: ModelEvent) : Observable<any> {
-    return this.http.post<ApiResponse<any>>(environment.apiUrl+"events/", updatedEvent).pipe(
-      mapApiData(),
+    return this.api.post<any>("events/", updatedEvent).pipe(      
       tap(
         eventUpApi => {  
           console.log("retour API");
@@ -99,11 +108,11 @@ export class EventService {
 
   deleteEvent(eventId: number) {
       console.log("delete");
-      return this.http.get<ApiResponse<ModelEvent>>(environment.apiUrl+"events/"+eventId+"/delete").pipe(
-      mapApiData(),
+      return this.api.get<ModelEvent>("events/"+eventId+"/delete").pipe(      
       tap(newEvent => {
           this._events.update(events => events.filter(e => e.Id !== eventId));
         })
       );
+
   }
 }

@@ -50,10 +50,7 @@ export class LoginPageComponent {
 
     this.authService.login(response.data.token)
 
-    const response4 = await firstValueFrom(this.http.get<ApiResponse<any>>(environment.apiUrl+'users/me'));
-    
-    this.authService.setUser(response4.data)
-    console.log(response4.data);
+    this.authService.getMe();
 
     this.router.navigate(['/events']);
 

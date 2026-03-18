@@ -2,7 +2,7 @@ import { Injectable, computed, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { firstValueFrom } from 'rxjs'
-import { References, RaceType, SubeventType, DistanceType } from '../models/referenciel.model.js';
+import { References, RaceType, SubEventType, DistanceUnit, ParticipationStatus } from '../models/referenciel.model.js';
 import { environment } from '../../../environment.ts/environment.js';
 import { ApiResponse } from '../models/api.model.js';
 import { mapApiData } from '../../utils/api.utils.js';
@@ -15,12 +15,16 @@ import { mapApiData } from '../../utils/api.utils.js';
 export class ReferentielService {
   private http: HttpClient = inject(HttpClient);
 
-  subeventTypes: SubeventType[] = [];
+  subeventTypes: SubEventType[] = [];
   raceTypes: RaceType[] = [];
   raceTypeById = new Map<number,RaceType>();
 
-  distanceTypes: DistanceType[] = [];
-  distanceTypeById = new Map<number,DistanceType>();
+  distanceUnit: DistanceUnit[] = [];
+  distanceUnitById = new Map<number,DistanceUnit>();
+
+  participationStatus: ParticipationStatus[] = [];
+  participationStatusById = new Map<number,ParticipationStatus>();
+
 
   private isloaded: boolean = false;
 
@@ -37,8 +41,10 @@ export class ReferentielService {
         this.raceTypes = ref.raceTypes;
         this.raceTypeById = new Map(this.raceTypes.map(rt => [rt.Id, rt]))
         this.subeventTypes = ref.subeventTypes;
-        this.distanceTypes = ref.distanceTypes;
-        this.distanceTypeById = new Map(this.distanceTypes.map(rt => [rt.Id, rt]))
+        this.distanceUnit = ref.distanceUnits;
+        this.distanceUnitById = new Map(this.distanceUnit.map(rt => [rt.Id, rt]))
+        this.participationStatus = ref.participationStatus;
+        this.participationStatusById = new Map(this.participationStatus.map(rt => [rt.Id, rt]))
       });
 
     this.isloaded = true;
@@ -49,10 +55,14 @@ export class ReferentielService {
     return raceReturn ?? {Id: 0, Name: '', Description: '', Icone: ''}
   }
 
-  getDistanceTypeById(paramId: number) : DistanceType {
-    const distancTypeReturn = this.distanceTypeById?.get(paramId);
+  getDistanceTypeById(paramId: number) : DistanceUnit {
+    const distancTypeReturn = this.distanceUnitById?.get(paramId);
     return distancTypeReturn ?? {Id: 0, Name: '', Abbreviation: ''}
   }
 
+  getParticipationStatusById(paramId: number) : DistanceUnit {    
+    const refReturn = this.participationStatusById ?.get(paramId);
+    return refReturn ?? {Id: 0, Name: '', Abbreviation: ''}
+  }
 
 }

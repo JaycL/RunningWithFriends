@@ -1,8 +1,13 @@
-import * as usersRepositories from '../repositories/users.repositories.js'
 import jwt from 'jsonwebtoken'
+import { log } from "../utils/logger.js";
+
+import * as usersRepositories from '../repositories/user.repositories.js'
+
+
+const scope = "user.service";
 
 export  async function getMe(userId) {  
-
+  log(scope, "getMe");
     console.log("getMe: "+userId);
     const row = await usersRepositories.getUserById(userId);  
     console.log(row);
@@ -13,7 +18,7 @@ export  async function getMe(userId) {
 
 
 export  async function login(email , pass) {  
-   
+  log(scope, "login"); 
 
   const user = await usersRepositories.getUserByLogin(email);    
   if (!user[0] || user[0].Password !== pass) {
@@ -22,8 +27,6 @@ export  async function login(email , pass) {
       message: "Login incorrect"
     }
   }
-
-
 
   const token = jwt.sign(
     { userId: user[0].Id },

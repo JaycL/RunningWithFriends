@@ -6,10 +6,15 @@
         <ul>
             <li><a routerLink="events">Evenements</a></li>
             <li><a routerLink="/">Calendrier</a></li>            
-            <li><a routerLink="/">Mon Profils</a></li>
+            <li><a routerLink="/">Mon Profils</a></li>            
+            @if (authService.isLogged() === null) {
+                <li><a routerLink="/login">Login</a></li>
+            }
+
         </ul>
     </nav>
-    <div>        
+    <div>      
+        {{ authService.currentUser()?.Pseudo}}  
         @if (authService.currentUser()?.Pseudo) {
             <p>
                 Bienvenue, 

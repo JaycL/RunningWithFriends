@@ -1,26 +1,35 @@
-import { AuditableEntity } from "./audit.models";
+export interface ModelParticipant {  
+    Id: number;
+    UserId: number;             
+    SubEventId: number;
+    ParticipationStatusId: number;
+    Pseudo: string;
+}
 
-export interface ModelRace extends AuditableEntity{  
+export interface ModelRace {  
     Id: number;         
     RaceTypeId: number;
     Distance: string;
-    DistanceTypeId: number;
+    DistanceUnitId: number;
 }
 
-export interface ModelSubEvent extends AuditableEntity{      
+export interface ModelSubEvent {      
     Id: number;
+    EventId: number;
     Name: string;
-    SubeventTypeId: number;
+    SubEventTypeId: number;
     StartAt: string;    
     Races: ModelRace[]; /* utile pour les multi epreuve ex. triathlon / dualthlon*/
+    Participants: ModelParticipant[]; /* liste des users qui sont inscrit à cette event */
 }
 
-export interface ModelEvent extends AuditableEntity {
+export interface ModelEvent {
     Id: number,
     Name: string;
     City: string;
     StartAt: string;
     EndAt: string;
     IsPublic: boolean; 
-    NbSubEvents: number;
+    NbSubEvent: number;
+    NbUserSubEvent: number;
 }
