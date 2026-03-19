@@ -1,21 +1,23 @@
 import { Routes } from '@angular/router';
-import { LoginPageComponent } from './pages/login-page/login-page.component.js';
-import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component.js';
-import { AuthLayoutComponent } from './core/layout/auth-layout/auth-layout.component.js';
-import { PageEventsComponent } from './pages/page-events/page-events.component.js';
+import { LoginPage } from './users/pages/login/login.page.js';
+import { MainLayoutComponent } from './core/layouts/main-layout/main-layout.component.js';
+import { AuthLayoutComponent } from './core/layouts/auth-layout/auth-layout.component.js';
+
+import { EventsListPage } from './events/pages/events-list/events-list.page.js';
 
 export const routes: Routes = [
     {   path: '', 
         component: MainLayoutComponent,
         children: [            
-            {path: 'events', component: PageEventsComponent},
+            {path: 'events-list', component: EventsListPage},
+            
             
         ]
     },
     {   path: '', 
         component: AuthLayoutComponent,
         children: [
-            {path: 'login', component: LoginPageComponent}            
+            {path: 'login', component: LoginPage}            
         ]
     },
 ];

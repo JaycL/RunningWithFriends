@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environment.ts/environment.js';
+import { environment } from '../../../environments/environment.js';
 import { map } from 'rxjs';
-import { ApiResponse } from '../models/api.model.js';
+import { ApiResponse } from '../../shared/models/api.model.js';
 
 @Injectable({
   providedIn: 'root'

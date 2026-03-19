@@ -1,6 +1,6 @@
 import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ModalService } from './core/services/modal.service.js';
+import { ModalService } from './shared/services/modal.service.js';
 import { AuthService } from './core/services/auth.service.js';
 
 @Component({

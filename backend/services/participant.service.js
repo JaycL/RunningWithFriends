@@ -1,6 +1,8 @@
 import { log } from "../utils/logger.js";
 
 import * as participantRep from '../repositories/participant.repositories.js'
+import { hasRows } from "../utils/db.utils.js";
+import { mapParticipantDTO, mapParticipantRow } from "../mappers/participant.mapper.js";
 
 const scope = "participant.service";
 
@@ -14,10 +16,16 @@ export  async function addParticipant(userId, subeventId, statusId) {
 
 export  async function getParticipantsBySubEvents(subeventIds) {  
     log(scope,"getParticipantsBySubEvents");    
-    return await participantRep.getParticipantsBySubEventId(subeventIds);          
+    const rows = await participantRep.getParticipantsBySubEventId(subeventIds);     
+    if (!hasRows(rows))
+        return [];
+    return rows.map(mapParticipantRow).map(mapParticipantDTO);
 }
 
 export  async function getParticipantsByUsers(userIds) {  
     log(scope,"getParticipantsByUsers");    
-    return await participantRep.getParticipantsByUserId(userIds);          
+    const rows = await participantRep.getParticipantsByUserId(userIds);          
+    if (!hasRows(rows))
+        return [];
+    return rows.map(mapParticipantRow).map(mapParticipantDTO);
 }

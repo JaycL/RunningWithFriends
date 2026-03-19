@@ -5,52 +5,19 @@ import { log } from "../utils/logger.js";
 
 import * as eventRepertories from "../repositories/event.repositories.js"
 
-import * as seService from './subEvent.service.js/index.js'
-import { mapEvent } from '../mappers/event.mapper.js';
+import * as seService from './subEvent.service.js'
+import { mapEventRow, mapEventDTO } from '../mappers/event.mapper.js';
 
 
 const scope = "event.service";
 
-export async function getSubEvents(eventId) {
-  log(scope, "getSubEvents");
-  return  await seService.getSubEvents(eventId);
-
-
-
-
-  const map = new Map();
-  for (const row of rows) {
-    
-    if (!map.has(row.SubEventId)) {      
-      map.set(row.SubEventId, {
-        Id: row.SubEventId,
-        Name: row.Name,
-        Type: row.Type,
-        StartAt: row.StartAt,
-        SubeventTypeId: row.SubeventTypeId,
-        Races: []
-      });
-    }
-    if (row.RaceId) {      
-      map.get(row.SubEventId).Races.push({
-        Id: row.RaceId,
-        Type: row.RaceType,
-        Distance: row.Distance,
-        DistanceTypeId: row.DistanceTypeId,
-        RaceTypeId: row.RaceTypeId,
-      });
-    }
-  }
-  return Array.from(map.values());
-}
-
 export  async function getEventsWithStats(eventId) {  
   log(scope, "getEventsWithStats");  
-  const row = await eventRepertories.getEventsWithStats(eventId);
-  if (!rows.length) {
+  const rows = await eventRepertories.getEventsWithStats(eventId);
+  if (!rows || !rows.length) {
     return [];
   }
-  return row.map(mapEvent());
+  return rows.map(mapEventDTO);
 }
 
 export  async function createUpdateEvent(event) {  
@@ -95,6 +62,11 @@ export  async function createUpdateEvent(event) {
     await transaction.rollback();
     throw err;
   }
+}
+
+export  async function getSubEvents(idEvent) {  
+  log(scope, "deleteEvent")
+  return await seService.getSubEvents(idEvent);
 }
 
 export  async function deleteEvent(idEvent) {  

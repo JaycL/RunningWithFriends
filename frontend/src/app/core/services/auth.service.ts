@@ -1,7 +1,7 @@
 import { Injectable, signal, Inject, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { environment } from '../../../environment.ts/environment.js';
+import { environment } from '../../../environments/environment.js';
 
 import { ApiService } from './api.service.js';
 

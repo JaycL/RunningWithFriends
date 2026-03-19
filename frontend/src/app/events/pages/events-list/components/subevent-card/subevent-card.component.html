@@ -1,0 +1,60 @@
+<div class="subevent">
+    
+  <div class="subevent-header">
+    <div class="subevent-name">
+        {{ subEvent.Name }}
+    </div>
+    <div class="subevent-date">
+      {{ subEvent.StartAt | date:'dd/MM/yyyy HH:mm' }}
+    </div>
+
+    <div>
+      <button (click)="addStatus(6)" > s'inscrire </button>
+      <button (click)="addStatus(5)"> sur liste d'attente </button>
+      <button (click)="addStatus(4)"> préinscrit </button>
+      <button (click)="addStatus(3)"> interressé </button>
+    </div>    
+
+     <div class="event-footer">    
+    @if (subEvent.Participants.length <= 0 ) {
+        aucun participant
+    }
+    @else {
+        <button class="btn toggle-sous-events" (click)="toogleParticipants()">
+            {{subEvent.Participants.length}} participant(s)
+        </button>
+    }    
+
+    </div> 
+
+   
+
+
+  </div>
+  <div class="subevent-races">
+     <!-- Sous events -->
+   @if (participantsOpen) {        
+       @for (participant of subEvent.Participants; track participant.Id) {  
+          <p>
+            {{ participant.Pseudo }}
+            {{ referentielService.getParticipationStatusById(participant.ParticipationStatusId).Name }}
+          </p>
+       }
+      
+    } 
+
+    @for (race of subEvent.Races; track race.Id) {       
+        <div class="race-badge">
+
+          <mat-icon>
+            {{ referentielService.getRaceTypeById(race.RaceTypeId).Icone }}
+          </mat-icon>          
+          <span class="race-distance">
+            {{ race.Distance }} {{ referentielService.getDistanceTypeById(race.DistanceUnitId).Abbreviation }}
+          </span>
+
+      </div>
+
+    }
+  </div>
+</div>

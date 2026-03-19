@@ -4,8 +4,9 @@ import { log } from "../utils/logger.js";
 const scope = "race.repositories";
 
 
-export async function getRaceBySubEventId(subeventIds) {
-    log(scope,"getRaceBySubEventId");            
+export async function getRaceBySubEventId(ids) {
+    log(scope,"getRaceBySubEventId");   
+    console.log(ids);         
     return await query(`
         SELECT  id,
                 race_order,
@@ -16,7 +17,7 @@ export async function getRaceBySubEventId(subeventIds) {
         FROM race 
         WHERE race.sub_event_id = ANY($1)
         ORDER BY race.id, race.race_order
-     `, [subeventIds]);      
+     `, [ids]);      
 }
 
 export async function saveRace(subeventId, order, updateRace) {
